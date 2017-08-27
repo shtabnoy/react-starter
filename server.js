@@ -6,8 +6,6 @@ const app = express();
 
 const compiler = webpack(webpackConfig);
 
-app.use(express.static(__dirname + "/dist"));
-
 app.use(
   webpackDevMiddleware(compiler, {
     hot: true,
@@ -20,7 +18,9 @@ app.use(
   })
 );
 
-const server = app.listen(3000, function() {
+app.use(express.static(__dirname + "/dist"));
+
+const server = app.listen(3000, "0.0.0.0", function() {
   const host = server.address().address;
   const port = server.address().port;
   console.log("Example app listening at http://%s:%s", host, port);
