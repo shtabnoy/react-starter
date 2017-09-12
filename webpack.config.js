@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: ['./index.js', 'webpack-hot-middleware/client'],
@@ -16,5 +17,12 @@ module.exports = {
             }
         ]
     },
-    plugins: [new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin()]
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'React Starter #1',
+            template: 'template.index.ejs'
+        })
+    ]
 }
