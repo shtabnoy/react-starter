@@ -3,7 +3,7 @@
     "extends": "airbnb",
     "plugins": ["react", "jsx-a11y", "import", "jsx-control-statements"],
     "rules": {
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "semi": ["error", "never"],
         "comma-dangle": ["error", "never"],
         "no-mixed-operators": [
