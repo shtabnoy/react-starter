@@ -23,7 +23,8 @@
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "react/prefer-stateless-function": ["off"],
         "react/jsx-indent-props": ["error", 4],
-        "react/jsx-no-undef": [2, { "allowGlobals": true }]
+        "react/jsx-no-undef": [2, { "allowGlobals": true }],
+        "import/prefer-default-export": ["warn"]
     },
     "env": {
         "jsx-control-statements/jsx-control-statements": true
