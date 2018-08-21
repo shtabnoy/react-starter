@@ -3,13 +3,14 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
+    mode: 'development',
     entry: ['./index.js', 'webpack-hot-middleware/client'],
     output: {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 loader: 'babel-loader',
                 test: /\.jsx?$/,
