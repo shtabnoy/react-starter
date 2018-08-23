@@ -34,12 +34,21 @@ class App extends Component {
         super(props)
         this.canvas = React.createRef()
         this.size = 300
-        this.extra = 4
+        this.extra = 20
         this.radius = 150
-        this.angleInc = 3
+        this.angleInc = 2
+        this.m = 11
+        this.a = 360 / this.m
+        this.arr = []
     }
 
     componentDidMount() {
+        let angle = 0
+        while (Math.round(angle) < 360) {
+            // console.log(angle)
+            this.arr.push(angle)
+            angle += this.a
+        }
         window.requestAnimationFrame(() => this.draw(0))
     }
 
@@ -69,14 +78,28 @@ class App extends Component {
             window.requestAnimationFrame(() => this.draw(angle + this.angleInc))
         }
 
-        const a = this.degToRad(360 / 11)
-        const x = this.radius + this.extra / 2 + this.radius * Math.cos(a)
-        const y = this.radius + this.extra / 2 - this.radius * Math.sin(a)
+        // small circles
+        let inc = this.m
+        this.arr.forEach((a) => {
+            if (a > (360 - angle)) {
+                const x = this.radius + this.extra / 2 + this.radius * Math.cos(this.degToRad(a))
+                const y = this.radius + this.extra / 2 - this.radius * Math.sin(this.degToRad(a))
+                ctx.beginPath()
+                ctx.arc(x, y, 8, 0, 2 * Math.PI, false)
+                ctx.strokeStyle = '#189309'
+                ctx.fillStyle = 'white'
+                ctx.stroke()
+                ctx.fill()
 
-        ctx.beginPath()
-        ctx.arc(x, y, 5, 0, 2 * Math.PI, false)
-        ctx.strokeStyle = '#a79877'
-        ctx.stroke()
+                ctx.fillStyle = 'black'
+                const size = 14
+                ctx.font = `${size}px Helvetica`
+                const text = inc
+                const metrics = ctx.measureText(text)
+                ctx.fillText(text, x - metrics.width / 2, y + 5)
+            }
+            inc -= 1
+        })
     }
 
     render() {
