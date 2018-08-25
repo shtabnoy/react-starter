@@ -1,5 +1,5 @@
 /* global window */
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { css } from 'emotion'
 
 const styles = css`
@@ -10,106 +10,100 @@ const styles = css`
 `
 
 class App extends Component {
-    // state = {
-    //     m: 11
-    // }
-
-    // render() {
-    //     const { m } = this.state
-    //     const a = (360 / m) * Math.PI / 180
-    //     const x = 110 + 100 * Math.cos(a)
-    //     const y = 110 - 100 * Math.sin(a)
-    //     console.log(x)
-    //     console.log(y)
-    //     return (
-    //         <svg className={svgStyles} width="220" height="220">
-    //             <circle cx="110" cy="110" r="100" stroke="red" strokeWidth="2" fill="none" />
-    //             <circle cx={x} cy={y} r="4" fill="blue" />
-
-    //         </svg>
-    //     )
-    // }
-
     constructor(props) {
         super(props)
-        this.canvas = React.createRef()
+        this.canvasRef = React.createRef()
+        this.ctx = null
         this.size = 300
-        this.extra = 20
+        this.extra = 24
         this.radius = 150
-        this.angleInc = 2
+        this.angleInc = 1
         this.m = 11
         this.a = 360 / this.m
         this.arr = []
+        this.angles = {}
     }
 
     componentDidMount() {
+        this.ctx = this.canvasRef.current.getContext('2d')
+
         let angle = 0
         while (Math.round(angle) < 360) {
-            // console.log(angle)
             this.arr.push(angle)
+            this.angles[angle] = '#189309'
             angle += this.a
         }
+        this.drawCircle(360, false, '#189309')
+        this.drawCirclesWithText()
+    }
+
+    startAnimation = () => {
         window.requestAnimationFrame(() => this.draw(0))
     }
 
-    degToRad = deg => deg * Math.PI / 180
-
     draw = (angle) => {
-        const canvas = this.canvas.current
-        const ctx = canvas.getContext('2d')
+        if (angle <= 360) {
+            this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
+            if (angle < 360) this.drawCircle(angle, true, '#189309')
+            this.drawCircle(angle, false, '#f27899')
+            this.drawCirclesWithText(angle)
+            window.requestAnimationFrame(() => this.draw(angle + this.angleInc))
+        }
+    }
 
-        ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
-        ctx.beginPath()
-        // ctx.moveTo(150, 150)
-        // ctx.lineTo(300, 150)
-        ctx.arc(
+    drawCirclesWithText = (angle) => {
+        // small circles
+        let inc = 1
+        this.arr.forEach((a) => {
+            if (angle - this.angleInc < a && a < angle + this.angleInc) this.angles[a] = '#f27899'
+            const x = this.radius + this.extra / 2 + this.radius * Math.cos(this.degToRad(a))
+            const y = this.radius + this.extra / 2 + this.radius * Math.sin(this.degToRad(a))
+            this.ctx.beginPath()
+            this.ctx.arc(x, y, 10, 0, 2 * Math.PI, false)
+            this.ctx.strokeStyle = this.angles[a]
+            this.ctx.fillStyle = 'white'
+            this.ctx.stroke()
+            this.ctx.fill()
+
+            this.ctx.fillStyle = this.angles[a]
+            const size = 14
+            this.ctx.font = `${size}px Helvetica`
+            const text = inc
+            const metrics = this.ctx.measureText(text)
+            this.ctx.fillText(text, x - metrics.width / 2, y + 5)
+            inc += 1
+        })
+    }
+
+    drawCircle = (angle, anticlockwise, color) => {
+        // big circle
+        this.ctx.beginPath()
+        this.ctx.arc(
             this.radius + this.extra / 2,
             this.radius + this.extra / 2,
             this.radius,
             0,
             this.degToRad(angle),
-            false
+            anticlockwise
         )
-        // ctx.lineTo(150, 150)
-        ctx.strokeStyle = '#189309'
-        ctx.lineWidth = 4
-        ctx.stroke()
-        if (angle <= 360) {
-            window.requestAnimationFrame(() => this.draw(angle + this.angleInc))
-        }
-
-        // small circles
-        let inc = this.m
-        this.arr.forEach((a) => {
-            if (a > (360 - angle)) {
-                const x = this.radius + this.extra / 2 + this.radius * Math.cos(this.degToRad(a))
-                const y = this.radius + this.extra / 2 - this.radius * Math.sin(this.degToRad(a))
-                ctx.beginPath()
-                ctx.arc(x, y, 8, 0, 2 * Math.PI, false)
-                ctx.strokeStyle = '#189309'
-                ctx.fillStyle = 'white'
-                ctx.stroke()
-                ctx.fill()
-
-                ctx.fillStyle = 'black'
-                const size = 14
-                ctx.font = `${size}px Helvetica`
-                const text = inc
-                const metrics = ctx.measureText(text)
-                ctx.fillText(text, x - metrics.width / 2, y + 5)
-            }
-            inc -= 1
-        })
+        this.ctx.strokeStyle = color
+        this.ctx.lineWidth = 4
+        this.ctx.stroke()
     }
+
+    degToRad = deg => deg * Math.PI / 180
 
     render() {
         return (
-            <canvas
-                className={styles}
-                ref={this.canvas}
-                width={this.size + this.extra}
-                height={this.size + this.extra}
-            />
+            <Fragment>
+                <canvas
+                    className={styles}
+                    ref={this.canvasRef}
+                    width={this.size + this.extra}
+                    height={this.size + this.extra}
+                />
+                <button type="button" onClick={this.startAnimation}>Click</button>
+            </Fragment>
         )
     }
 }
