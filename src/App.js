@@ -20,7 +20,7 @@ class App extends Component {
         this.angleInc = 1
         this.angles = []
         this.angleColors = {}
-        this.x = 3
+        this.x = 8
         this.m = 7
         this.unitAngle = 360 / this.m
         this.result = 0
@@ -47,7 +47,6 @@ class App extends Component {
             this.angleColors[angle] = '#189309'
             angle += this.unitAngle
         }
-        // console.log(this.angles)
         this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
         this.drawCircle(360, false, '#189309')
         this.drawText(`${this.x} mod ${this.m} = ${'?'}`)
@@ -55,9 +54,7 @@ class App extends Component {
     }
 
     draw = (angle) => {
-        console.log(angle, this.counter, this.x, this.result)
         if (this.counter < this.x) {
-        // if (angle <= 360) {
             this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
 
             if (angle >= this.unitAngle * (this.result + 1)) {
@@ -70,9 +67,7 @@ class App extends Component {
             this.drawCircle(angle, false, '#f27899')
             this.drawCirclesWithText(angle)
 
-            // if (angle <= this.angles[this.x - 1]) { // this.x % this.m
             window.requestAnimationFrame(() => this.draw(angle % 360 + this.angleInc))
-            // }
         }
     }
 
@@ -92,7 +87,11 @@ class App extends Component {
         // small circles
         let inc = 0
         this.angles.forEach((a) => {
-            if (angle >= a) this.angleColors[a] = '#f27899'
+            if (angle >= a) {
+                this.angleColors[a] = '#f27899'
+            } else {
+                this.angleColors[a] = '#189309'
+            }
             const x = this.radius + this.extra / 2 + this.radius * Math.cos(this.degToRad(a))
             const y = this.radius + this.extra / 2 + this.radius * Math.sin(this.degToRad(a))
             this.ctx.beginPath()
