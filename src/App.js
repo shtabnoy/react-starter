@@ -18,57 +18,94 @@ class App extends Component {
         this.extra = 24
         this.radius = 150
         this.angleInc = 1
-        this.m = 11
-        this.a = 360 / this.m
-        this.arr = []
-        this.angles = {}
+        this.angles = []
+        this.angleColors = {}
+        this.x = 3
+        this.m = 7
+        this.unitAngle = 360 / this.m
+        this.result = 0
+        this.counter = 0
     }
 
     componentDidMount() {
         this.ctx = this.canvasRef.current.getContext('2d')
-
-        let angle = 0
-        while (Math.round(angle) < 360) {
-            this.arr.push(angle)
-            this.angles[angle] = '#189309'
-            angle += this.a
-        }
-        this.drawCircle(360, false, '#189309')
-        this.drawCirclesWithText()
+        this.reset()
     }
 
     startAnimation = () => {
         window.requestAnimationFrame(() => this.draw(0))
     }
 
+    reset = () => {
+        this.angles = []
+        this.angleColors = {}
+        this.result = 0
+        let angle = 0
+        this.counter = 0
+        while (Math.round(angle) < 360) {
+            this.angles.push(angle)
+            this.angleColors[angle] = '#189309'
+            angle += this.unitAngle
+        }
+        // console.log(this.angles)
+        this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
+        this.drawCircle(360, false, '#189309')
+        this.drawText(`${this.x} mod ${this.m} = ${'?'}`)
+        this.drawCirclesWithText()
+    }
+
     draw = (angle) => {
-        if (angle <= 360) {
+        console.log(angle, this.counter, this.x, this.result)
+        if (this.counter < this.x) {
+        // if (angle <= 360) {
             this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
+
+            if (angle >= this.unitAngle * (this.result + 1)) {
+                this.result = (this.result += 1) % this.m
+                this.counter += 1
+            }
+            this.drawText(`${this.x} mod ${this.m} = ${this.result}`)
+
             if (angle < 360) this.drawCircle(angle, true, '#189309')
             this.drawCircle(angle, false, '#f27899')
             this.drawCirclesWithText(angle)
-            window.requestAnimationFrame(() => this.draw(angle + this.angleInc))
+
+            // if (angle <= this.angles[this.x - 1]) { // this.x % this.m
+            window.requestAnimationFrame(() => this.draw(angle % 360 + this.angleInc))
+            // }
         }
+    }
+
+    drawText = (equationText) => {
+        this.ctx.fillStyle = 'black'
+        const size = 18
+        this.ctx.font = `${size}px Helvetica`
+        const metrics = this.ctx.measureText(equationText)
+        this.ctx.fillText(
+            equationText,
+            this.size / 2 + this.extra / 2 - metrics.width / 2,
+            this.size / 2 + this.extra / 2
+        )
     }
 
     drawCirclesWithText = (angle) => {
         // small circles
-        let inc = 1
-        this.arr.forEach((a) => {
-            if (angle - this.angleInc < a && a < angle + this.angleInc) this.angles[a] = '#f27899'
+        let inc = 0
+        this.angles.forEach((a) => {
+            if (angle >= a) this.angleColors[a] = '#f27899'
             const x = this.radius + this.extra / 2 + this.radius * Math.cos(this.degToRad(a))
             const y = this.radius + this.extra / 2 + this.radius * Math.sin(this.degToRad(a))
             this.ctx.beginPath()
             this.ctx.arc(x, y, 10, 0, 2 * Math.PI, false)
-            this.ctx.strokeStyle = this.angles[a]
+            this.ctx.strokeStyle = this.angleColors[a]
             this.ctx.fillStyle = 'white'
             this.ctx.stroke()
             this.ctx.fill()
 
-            this.ctx.fillStyle = this.angles[a]
+            this.ctx.fillStyle = this.angleColors[a]
             const size = 14
             this.ctx.font = `${size}px Helvetica`
-            const text = inc
+            const text = inc % this.m
             const metrics = this.ctx.measureText(text)
             this.ctx.fillText(text, x - metrics.width / 2, y + 5)
             inc += 1
@@ -103,6 +140,7 @@ class App extends Component {
                     height={this.size + this.extra}
                 />
                 <button type="button" onClick={this.startAnimation}>Click</button>
+                <button type="button" onClick={this.reset}>Reset</button>
             </Fragment>
         )
     }
