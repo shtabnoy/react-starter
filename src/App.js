@@ -17,10 +17,10 @@ class App extends Component {
         this.size = 300
         this.extra = 24
         this.radius = 150
-        this.angleInc = 1
+        this.angleInc = 3
         this.angles = []
         this.angleColors = {}
-        this.x = 8
+        this.x = 90
         this.m = 7
         this.unitAngle = 360 / this.m
         this.result = 0
@@ -54,6 +54,12 @@ class App extends Component {
     }
 
     draw = (angle) => {
+        if (this.x === 0) {
+            this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
+            this.drawText(`${this.x} mod ${this.m} = ${this.result}`)
+            this.drawCircle(360, false, '#189309')
+            this.drawCirclesWithText(0)
+        }
         if (this.counter < this.x) {
             this.ctx.clearRect(0, 0, this.size + this.extra, this.size + this.extra)
 
@@ -63,9 +69,9 @@ class App extends Component {
             }
             this.drawText(`${this.x} mod ${this.m} = ${this.result}`)
 
-            if (angle < 360) this.drawCircle(angle, true, '#189309')
-            this.drawCircle(angle, false, '#f27899')
-            this.drawCirclesWithText(angle)
+            if (angle <= 360) this.drawCircle(angle, true, '#189309')
+            this.drawCircle(angle % 360, false, '#f27899')
+            this.drawCirclesWithText(angle % 360)
 
             window.requestAnimationFrame(() => this.draw(angle % 360 + this.angleInc))
         }
