@@ -24,7 +24,6 @@ app.use(webpackHotMiddleware(compiler))
 app.use(express.static(`${__dirname}/dist`))
 
 const server = app.listen(3000, '0.0.0.0', () => {
-    const host = server.address().address
-    const port = server.address().port
+    const { host, port } = server.address()
     console.log('Example app listening at http://%s:%s', host, port)
 })
