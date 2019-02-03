@@ -1,32 +1,22 @@
 {
-    "parser": "babel-eslint",
-    "extends": "airbnb",
-    "plugins": ["react", "jsx-a11y", "import", "jsx-control-statements"],
-    "rules": {
-        "indent": ["error", 4, { "SwitchCase": 1 }],
-        "semi": ["error", "never"],
-        "comma-dangle": ["error", "never"],
-        "no-mixed-operators": [
-            "error",
-            {
-                "groups": [
-                    ["&", "|", "^", "~", "<<", ">>", ">>>"],
-                    ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
-                    ["&&", "||"],
-                    ["in", "instanceof"]
-                ],
-                "allowSamePrecedence": true
-            }
-        ],
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "react/jsx-indent": ["error", 4],
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-        "react/prefer-stateless-function": ["off"],
-        "react/jsx-indent-props": ["error", 4],
-        "react/jsx-no-undef": [2, { "allowGlobals": true }],
-        "import/prefer-default-export": ["warn"]
-    },
-    "env": {
-        "jsx-control-statements/jsx-control-statements": true
-    }
+  "parser": "babel-eslint",
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "plugins": ["react"],
+  "rules": {
+    "no-console": "warn"
+  },
+  "globals": {
+    "document": true,
+    "it": true,
+    "xit": true,
+    "expect": true,
+    "describe": true,
+    "jest": true,
+    "beforeEach": true,
+    "require": true,
+    "module": true,
+    "window": true,
+    "console": true,
+    "__dirname": true
+  }
 }

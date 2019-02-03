@@ -1,59 +1,57 @@
 {
   "name": "react-starter",
-  "version": "0.0.1",
-  "description": "React Starter #1",
-  "repository": "shtabnoy/react-starter",
+  "version": "1.0.0",
+  "description": "Basic starter for react app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "webpack",
-    "start": "node server.js"
+    "start": "webpack-dev-server --open --mode development",
+    "build": "webpack --mode production",
+    "test": "jest"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/config/jestSetup.js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
   },
   "keywords": [],
   "author": "shtabnoy",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.15.4",
-    "jsx-control-statements": "^3.2.6",
-    "prop-types": "^15.5.10",
-    "react": "^16.5.1",
-    "react-dom": "^16.5.1",
-    "webpack": "^4.19.0",
-    "webpack-dev-middleware": "^3.3.0",
-    "webpack-hot-middleware": "^2.24.0"
-  },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/plugin-proposal-do-expressions": "^7.0.0",
-    "@babel/plugin-proposal-export-default-from": "^7.0.0",
-    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
-    "@babel/plugin-proposal-function-bind": "^7.0.0",
-    "@babel/plugin-proposal-function-sent": "^7.0.0",
-    "@babel/plugin-proposal-json-strings": "^7.0.0",
-    "@babel/plugin-proposal-logical-assignment-operators": "^7.0.0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.0.0",
-    "@babel/plugin-proposal-numeric-separator": "^7.0.0",
-    "@babel/plugin-proposal-optional-chaining": "^7.0.0",
-    "@babel/plugin-proposal-pipeline-operator": "^7.0.0",
-    "@babel/plugin-proposal-throw-expressions": "^7.0.0",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
-    "@babel/plugin-syntax-import-meta": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
-    "babel-eslint": "^9.0.0",
-    "babel-loader": "^8.0.0",
-    "css-loader": "^1.0.0",
-    "eslint": "^5.6.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-jsx-control-statements": "^2.2.0",
-    "eslint-plugin-react": "^7.3.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "eslint": "^5.12.1",
+    "eslint-plugin-react": "^7.12.4",
+    "file-loader": "^3.0.1",
+    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.7.2",
+    "jest": "^23.6.0",
+    "node-sass": "^4.11.0",
+    "regenerator-runtime": "^0.13.1",
     "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.0"
+    "style-loader": "^0.23.1",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "@emotion/core": "^10.0.6",
+    "@emotion/styled": "^10.0.6",
+    "prop-types": "^15.6.2",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
   }
 }
