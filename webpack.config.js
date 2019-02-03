@@ -11,6 +11,7 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/',
   },
+  // to make absolute path imports possible
   resolve: {
     modules: [path.resolve(__dirname, './src'), 'node_modules'],
   },
